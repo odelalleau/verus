@@ -51,7 +51,7 @@ std::vector<sendPkt*> sendingList;
 pthread_mutex_t lockSendingList;
 
 boost::asio::io_service io;
-boost::asio::deadline_timer timer (io, boost::posix_time::milliseconds(SS_INIT_TIMEOUT));
+boost::asio::deadline_timer timer (io, boost::posix_time::milliseconds(static_cast<long>(SS_INIT_TIMEOUT)));
 
 static void displayError(const char *on_what) {
   fputs(strerror(errno),stderr);
@@ -134,7 +134,7 @@ void* timeout_thread (void *arg)
 {
   boost::asio::io_service::work work(io);
 
-  timer.expires_from_now (boost::posix_time::milliseconds(SS_INIT_TIMEOUT));
+  timer.expires_from_now (boost::posix_time::milliseconds(static_cast<long>(SS_INIT_TIMEOUT)));
   timer.async_wait(&TimeoutHandler);
   io.run();
 
