@@ -49,8 +49,8 @@
 #include <atomic>
 
 // ALGLIB library
-#include "../lib/alglib/src/ap.h"
-#include "../lib/alglib/src/interpolation.h"
+#include <libalglib/ap.h>
+#include <libalglib/interpolation.h>
 
 #include <boost/asio.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>

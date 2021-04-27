@@ -86,7 +86,7 @@ std::ofstream verusLog;
 
 // Boost timeout timer
 boost::asio::io_service io;
-boost::asio::deadline_timer timer (io, boost::posix_time::milliseconds(SS_INIT_TIMEOUT));
+boost::asio::deadline_timer timer (io, boost::posix_time::milliseconds(static_cast<long>(SS_INIT_TIMEOUT)));
 
 void segfault_sigaction(int signal, siginfo_t *si, void *arg)
 {
@@ -208,7 +208,7 @@ void TimeoutHandler( const boost::system::error_code& e) {
 
     //update timer and restart
     timeouttimer=fmin (MAX_TIMEOUT, fmax((5*delay), MIN_TIMEOUT));
-    timer.expires_from_now (boost::posix_time::milliseconds(timeouttimer));
+    timer.expires_from_now (boost::posix_time::milliseconds(static_cast<long>(timeouttimer)));
     timer.async_wait(&TimeoutHandler);
 
     return;
@@ -260,7 +260,7 @@ void restartSlowStart(void) {
     tempS = 1;
 
     //update timeout timer and restart
-    timer.expires_from_now (boost::posix_time::milliseconds(SS_INIT_TIMEOUT));
+    timer.expires_from_now (boost::posix_time::milliseconds(static_cast<long>(SS_INIT_TIMEOUT)));
     timer.async_wait(&TimeoutHandler);
 
     pthread_mutex_unlock(&restartLock);
@@ -670,7 +670,7 @@ void* receiver_thread (void *arg)
 
         //update timer and restart
         timeouttimer=fmin (MAX_TIMEOUT, fmax((5*delay), MIN_TIMEOUT));
-        timer.expires_from_now (boost::posix_time::milliseconds(timeouttimer));
+        timer.expires_from_now (boost::posix_time::milliseconds(static_cast<long>(timeouttimer)));
         timer.async_wait(&TimeoutHandler);
 
         write2Log (receiverLog, std::to_string(pdu->seq), std::to_string(delay), std::to_string(wCrt), std::to_string(wBar), "");
@@ -732,7 +732,7 @@ void* timeout_thread (void *arg)
 {
     boost::asio::io_service::work work(io);
 
-    timer.expires_from_now (boost::posix_time::milliseconds(SS_INIT_TIMEOUT));
+    timer.expires_from_now (boost::posix_time::milliseconds(static_cast<long>(SS_INIT_TIMEOUT)));
     timer.async_wait(&TimeoutHandler);
     io.run();
 
